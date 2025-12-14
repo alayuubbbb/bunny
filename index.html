@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pixel Pastel Bunny Garden 🐰</title>
+<style>
+  body{
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:linear-gradient(135deg,#f8cdda,#e8f3e8);
+    font-family:'Poppins',sans-serif;
+  }
+  canvas{
+    image-rendering: pixelated;
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+    background:#dff5e3;
+  }
+</style>
+</head>
+<body>
+<canvas id="art" width="320" height="320"></canvas>
+
+<script>
+const c = document.getElementById('art');
+const ctx = c.getContext('2d');
+
+const P = 10; // ukuran 1 pixel
+
+// warna pastel
+const color = {
+  sky:'#eaf6ff',
+  grass:'#bfe6c8',
+  grassDark:'#a6d9b2',
+  bunny:'#fff1e6',
+  bunnyPink:'#f7c1d9',
+  bunnyBeige:'#f3e3d3',
+  eye:'#5a4a42',
+  flower:'#ffd6e8'
+};
+
+function pixel(x,y,col){
+  ctx.fillStyle = col;
+  ctx.fillRect(x*P,y*P,P,P);
+}
+
+// langit
+for(let y=0;y<12;y++){
+  for(let x=0;x<32;x++) pixel(x,y,color.sky);
+}
+
+// rumput
+for(let y=12;y<32;y++){
+  for(let x=0;x<32;x++) pixel(x,y, y%2?color.grass:color.grassDark);
+}
+
+// bunga kecil
+[[5,18],[8,20],[25,19],[22,22]].forEach(p=>pixel(p[0],p[1],color.flower));
+
+// fungsi kelinci
+function bunny(px,py,bodyColor){
+  // telinga
+  pixel(px+1,py-3,bodyColor); pixel(px+1,py-4,bodyColor);
+  pixel(px+3,py-3,bodyColor); pixel(px+3,py-4,bodyColor);
+
+  // kepala
+  for(let y=0;y<3;y++){
+    for(let x=0;x<5;x++) pixel(px+x,py+y,bodyColor);
+  }
+
+  // mata
+  pixel(px+1,py+1,color.eye);
+  pixel(px+3,py+1,color.eye);
+
+  // badan
+  for(let y=3;y<7;y++){
+    for(let x=1;x<4;x++) pixel(px+x,py+y,bodyColor);
+  }
+}
+
+// kelinci kiri
+bunny(9,17,color.bunnyPink);
+
+// kelinci kanan
+bunny(18,17,color.bunnyBeige);
+</script>
+</body>
+</html>
